@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <script>
+        async function fetchStudents() {
+            const response = await fetch('http://127.0.0.1:5000/students');
+            const students = await response.json();
+            let studentList = document.getElementById('student-list');
+            studentList.innerHTML = '';
+            students.forEach(student => {
+                let li = document.createElement('li');
+                li.textContent = `${student.name}, Age: ${student.age}, Courses: ${student.courses.join(', ')}`;
+                studentList.appendChild(li);
+            });
+        }
+
+        async function addStudent() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const courses = document.getElementById('courses').value.split(',');
+            
+            await fetch('http://127.0.0.1:5000/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, age, courses })
+            });
+            fetchStudents();
+        }
+    </script>
+</head>
+<body onload="fetchStudents()">
+    <h1>Student Management System</h1>
+    <h2>Add Student</h2>
+    <input type="text" id="name" placeholder="Name">
+    <input type="number" id="age" placeholder="Age">
+    <input type="text" id="courses" placeholder="Courses (comma-separated)">
+    <button onclick="addStudent()">Add Student</button>
+    
+    <h2>Student List</h2>
+    <ul id="student-list"></ul>
+</body>
+</html>
