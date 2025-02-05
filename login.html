@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Polling System</title>
+    <script>
+        async function fetchPolls() {
+            const response = await fetch('http://127.0.0.1:5000/polls');
+            const polls = await response.json();
+            let pollList = document.getElementById('poll-list');
+            pollList.innerHTML = '';
+            polls.forEach(poll => {
+                let div = document.createElement('div');
+                div.innerHTML = `<h3>${poll.question}</h3>`;
+                poll.choices.forEach(choice => {
+                    div.innerHTML += `<button onclick="vote(${choice.id})">${choice.text} (${choice.votes})</button> `;
+                });
+                pollList.appendChild(div);
+            });
+        }
+
+        async function createPoll() {
+            const question = document.getElementById('question').value;
+            const choices = document.getElementById('choices').value.split(',');
+            
+            await fetch('http://127.0.0.1:5000/polls', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question, choices })
+            });
+            fetchPolls();
+        }
+
+        async function vote(choiceId) {
+            await fetch('http://127.0.0.1:5000/vote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ choice_id: choiceId })
+            });
+            fetchPolls();
+        }
+    </script>
+</head>
+<body onload="fetchPolls()">
+    <h1>Online Polling System</h1>
+    <h2>Create Poll</h2>
+    <input type="text" id="question" placeholder="Poll Question">
+    <input type="text" id="choices" placeholder="Choices (comma-separated)">
+    <button onclick="createPoll()">Create Poll</button>
+    
+    <h2>Active Polls</h2>
+    <div id="poll-list"></div>
+</body>
+</html>
