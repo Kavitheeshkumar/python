@@ -1,13 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
-    text-align: center;
 }
 
 h1, h2 {
-    color: #343a40;
+    color: #333;
 }
 
 input {
@@ -21,29 +20,25 @@ button {
     padding: 10px 15px;
     margin: 5px;
     border: none;
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #218838;
 }
 
-#poll-list div {
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
     background: white;
     padding: 10px;
-    margin: 10px auto;
+    margin: 5px 0;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    width: 50%;
-}
-
-button.vote-btn {
-    background-color: hsl(268, 61%, 41%);
-}
-
-button.vote-btn:hover {
-    background-color: hsl(91, 61%, 33%);
 }
